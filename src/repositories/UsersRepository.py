@@ -126,18 +126,11 @@ def getUserSession(id):
 def fetchUserSession(id):
     try:
         user = usersDb.find_one({"_id": id})
+
         for stock in user['stocks']:
-            if not('symbol' in stock and stock['symbol'] is not None):
-                continue    
-            fetchStockNews(stock['symbol'])
-        for stock in user['stocks']:
-            if not('symbol' in stock and stock['symbol'] is not None):
-                continue    
-            if not('tags' in stock and stock['tags'] is not None):
-                stock['tags'] = ''
-            fetchGoogleNews({
-                'keywords': stock['tags']
-            })
+            if 'symbol' in stock and stock['symbol'] is not None:
+                fetchStockNews(stock['symbol'])
+            
         return 200
     except:
         print('Error UsersRepository - fetchUserSession()')
