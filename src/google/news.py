@@ -34,6 +34,17 @@ def handleRequest(endpoint):
 def findWholeWord(word, string):
     return re.compile(r'\b({0})\b'.format(word), flags=re.IGNORECASE).search(string) is not None
 
+def removeDuplicates(response):
+    urls = []
+    articles = []
+
+    for article in response:
+        if article['url'] not in urls:
+            urls.append(article['url'])
+            articles.append(article)
+
+    return articles
+
 def getGoogleNews(search):
     if 'keywords' not in search:
         return 'BAD_REQUEST', 400
@@ -79,6 +90,8 @@ def getGoogleNews(search):
             if article['source']['name'] in sources:
                 filtered.append(article)
         response = filtered
+
+    response = removeDuplicates(response)
 
     return sorted(response, key = lambda article: (parser.parse(article["publishedAt"])), reverse=True)
 
