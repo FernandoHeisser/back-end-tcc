@@ -1,4 +1,5 @@
 import requests, uuid
+import pandas_datareader as pdr
 from bs4 import BeautifulSoup
 
 from src.config.database.connection import *
@@ -26,8 +27,14 @@ def fetchStocks():
                             "url": url
                         }
                         stocks = stocksDb.find({"symbol": stock["symbol"]})
-                        if len(list(stocks)) == 0 and stock["symbol"] is not None:
-                            stocksDb.insert_one(stock)
+                        try:
+                            if len(list(stocks)) == 0 and stock["symbol"] is not None:
+                                pdr.data.get_data_yahoo(str(stock['symbol'])+'.SA')
+                                stocksDb.insert_one(stock)
+                                print('Stock inserted - ', stock['symbol'])
+                        except:
+                            print('Not a stock - ', stock['symbol'])
+
         return 200                        
     except:
         print('Error - fetchStocks')

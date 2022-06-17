@@ -27,7 +27,6 @@ def getSession(id):
                             'tags': stock['tags'],
                         }
                     )
-
             except:
                 print('Could not get stock info - ' + stock['symbol'])
                 continue
