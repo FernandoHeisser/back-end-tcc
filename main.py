@@ -1,9 +1,8 @@
-from src.server.instance import server
+from src.config.server.instance import server
 
-from src.controllers.stocks import *
-from src.controllers.users import *
-from src.controllers.news import *
-from src.controllers.analysis import *
+from stocks.stocks_controller import *
+from users.users_controller import *
+from analysis.analysis_controller import *
 
 app = server
 

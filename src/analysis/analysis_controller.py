@@ -1,7 +1,6 @@
 from flask_restx import Resource, fields
-import pandas_datareader as pdr
-from src.server.instance import server
-from src.finance.yfinance import *
+from src.config.server.instance import server
+from analysis.analysis_repository import *
 
 app, api = server.app, server.api
 
@@ -27,7 +26,3 @@ class Apriori(Resource):
             print('Apriori Error')
             return "ERROR", 500
 
-@api.route('/smoke')
-class Smoke(Resource):
-    def get(self, ):
-        return "OK", 200
