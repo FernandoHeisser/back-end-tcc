@@ -30,6 +30,6 @@ def fetchStocks():
                             stocksDb.insert_one(stock)
         return 200                        
     except:
-        print('Error - fetchStocks()')
-        return 500
+        print('Error - fetchStocks')
+        return None
 

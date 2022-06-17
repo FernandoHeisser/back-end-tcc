@@ -1,44 +1,32 @@
-
+from src.users.users_repository import getUser
+from src.stocks.stocks_repository import getStockBySymbol
+from src.yfinance.yfinance_repository import getCurrentStockDataFromYahoo
 
 def getSession(id):
     try:
-        user = usersDb.find_one({"_id": id})
-
+        user = getUser(id)
         if user is None:
-            return 404
+            return None
 
         userStocks = []
-
         for stock in user['stocks']:
-
             try: 
-                if not('symbol' in stock and stock['symbol'] is not None):
-                    continue
+                if 'symbol' in stock and stock['symbol'] is not None:
+                    
+                    info = getStockBySymbol(stock['symbol'])
+                    data = getCurrentStockDataFromYahoo(stock['symbol'])
+                    
+                    if not('tags' in stock and stock['tags'] is not None):
+                        stock['tags'] = str(info['company'] + ', ' + stock['symbol'])
 
-                try:
-                    fetchStockData(stock['symbol'])
-                except:
-                    print('Could not fetch stock data - ' + stock['symbol'])
-
-                stockData = getLastStockData(stock['symbol'])
-
-                stockDataYahoo = getCurrentStockDataFromYahoo(stock['symbol'])
-
-                if not('tags' in stock and stock['tags'] is not None):
-                    stock['tags'] = str(stockData['company'] + ', ' + stock['symbol'])
-
-                if not('sources' in stock and stock['sources'] is not None):
-                    stock['sources'] = []
-
-                userStocks.append(
-                    {
-                        'symbol': stock['symbol'],
-                        'stockDataYahoo': stockDataYahoo,
-                        'stockCurrentData': stockData,
-                        'tags': stock['tags'],
-                        'sources': stock['sources'],
-                    }
-                )
+                    userStocks.append(
+                        {
+                            'symbol': stock['symbol'],
+                            'company': info['company'],
+                            'data': data,
+                            'tags': stock['tags'],
+                        }
+                    )
 
             except:
                 print('Could not get stock info - ' + stock['symbol'])
@@ -51,5 +39,5 @@ def getSession(id):
 
         return reponse
     except:
-        print('Error UsersRepository - getUserSession()')
-        return 500
+        print('Error - getSession')
+        return None

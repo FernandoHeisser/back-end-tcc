@@ -11,8 +11,8 @@ def getUsers():
         }
         return response
     except:
-        print('Error UsersRepository - getUsers()')
-        return 500
+        print('Error - getUsers')
+        return None
 
 def createUser(request):
     try:
@@ -23,8 +23,8 @@ def createUser(request):
 
         return usersDb.insert_one(user).inserted_id
     except:
-        print('Error UsersRepository - createUser()')
-        return 500
+        print('Error - createUser')
+        return None
 
 def updateUser(user):
     try:
@@ -36,26 +36,22 @@ def updateUser(user):
     
             return user
         else:
-            return 400
+            return None
     except:
-        print('Error UsersRepository - updateUser()')
-        return 500
+        print('Error - updateUser')
+        return None
 
 def getUser(id):    
     try:
-        user = usersDb.find_one({"_id": id})
-        if user is None:
-            return "NOT FOUND", 404
-        else:
-            return user
+        return usersDb.find_one({"_id": id})
     except:
-        print('Error UsersRepository - getUser()')
-        return 500
+        print('Error - getUser')
+        return None
 
 def deleteUser(id):    
     try:    
         return usersDb.delete_one({"_id": id}).deleted_count
     except:
-        print('Error UsersRepository - deleteUser()')
-        return 500
+        print('Error - deleteUser')
+        return None
 

@@ -19,7 +19,8 @@ def getCurrentStockDataFromYahoo(symbol):
         }
         
     except:
-        return "ERROR", 500
+        print('Error - getCurrentStockDataFromYahoo')
+        return None
 
 def getFirstOfTheDayAndCurrentStockDataFromYahoo(symbol):
     try:
@@ -60,31 +61,40 @@ def getFirstOfTheDayAndCurrentStockDataFromYahoo(symbol):
         }
 
     except:
-        return 'ERROR', 500
+        print('Error - getFirstOfTheDayAndCurrentStockDataFromYahoo')
+        return None
 
 def getCurrentStockDataFromYahooList(stockList):
-    symbols = stockList['stockList']
+    try:
+        symbols = stockList['stockList']
 
-    stockDatas = []
+        stockDatas = []
 
-    for symbol in symbols:
-        stockDatas.append({
-            'symbol': symbol,
-            'content': getCurrentStockDataFromYahoo(symbol)
-        })
+        for symbol in symbols:
+            stockDatas.append({
+                'symbol': symbol,
+                'content': getCurrentStockDataFromYahoo(symbol)
+            })
 
-    return stockDatas
+        return stockDatas
+    except:
+        print('Error - getCurrentStockDataFromYahooList')
+        return None
 
 def getFirstOfTheDayAndCurrentStockDataFromYahooList(stockList):
-    symbols = stockList['stockList']
+    try:
+        symbols = stockList['stockList']
 
-    stockDatas = []
+        stockDatas = []
 
-    for symbol in symbols:
-        stockDatas.append({
-            'symbol': symbol,
-            'content': getFirstOfTheDayAndCurrentStockDataFromYahoo(symbol)
-        })
+        for symbol in symbols:
+            stockDatas.append({
+                'symbol': symbol,
+                'content': getFirstOfTheDayAndCurrentStockDataFromYahoo(symbol)
+            })
 
-    return stockDatas
+        return stockDatas
+    except:
+        print('Error - getFirstOfTheDayAndCurrentStockDataFromYahooList')
+        return None
 

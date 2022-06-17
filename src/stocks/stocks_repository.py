@@ -4,9 +4,10 @@ from src.config.database.connection import stocksDb
 def getStockBySymbol(symbol):    
     try:
         return list(stocksDb.find({"symbol": str(symbol).upper()}))
+
     except:
-        print('Error - StocksRepository getStockNewsBySymbol()')
-        return 500
+        print('Error - getStockNewsBySymbol')
+        return None
 
 def getStocks():    
     try:
@@ -16,9 +17,10 @@ def getStocks():
             'content': stocks
         }
         return response
+
     except:
-        print('Error - StocksRepository getStocks()')
-        return 500
+        print('Error - getStocks')
+        return None
 
 def createStock(request):
     try:
@@ -29,7 +31,8 @@ def createStock(request):
             "url": request["url"]
         }
         return stocksDb.insert_one(stock).inserted_id
+
     except:
-        print('Error - StocksRepository createStock()')
-        return 500
+        print('Error - createStock')
+        return None
 

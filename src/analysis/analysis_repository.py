@@ -185,29 +185,32 @@ def createDataFrame(stock, startDate, endDate, firstCondition, secondCondition):
         return createDataFrameCurrentRow(symbol, data, columnName1, stockCondition, columnName2)
 
 def aprioriV2(input):
-    request = validateRequest(input)   
+    try:
+        request = validateRequest(input)   
 
-    stocks = request['stocks']
-    startDate = request['startDate']
-    firstCondition = request['firstCondition']
-    secondCondition = request['secondCondition']
-    endDate = request['endDate']
-    minSupport = request['minSupport']
-    minConfidence = request['minConfidence']
-    minLift = request['minLift']
-    minLength = request['minLength']
+        stocks = request['stocks']
+        startDate = request['startDate']
+        firstCondition = request['firstCondition']
+        secondCondition = request['secondCondition']
+        endDate = request['endDate']
+        minSupport = request['minSupport']
+        minConfidence = request['minConfidence']
+        minLift = request['minLift']
+        minLength = request['minLength']
 
-    dfs = []
+        dfs = []
 
-    for stock in stocks:
-        try:
-            dfs.append(createDataFrame(stock, startDate, endDate, firstCondition, secondCondition))
-        except:
-            print("Stock not found")
+        for stock in stocks:
+            try:
+                dfs.append(createDataFrame(stock, startDate, endDate, firstCondition, secondCondition))
+            except:
+                print("Stock not found")
 
-    result = pd.concat(dfs, axis=1)
-    result = result.loc[:,~result.columns.duplicated()]
-    return localApriori(result, minSupport, minConfidence, minLift, minLength), 200
+        result = pd.concat(dfs, axis=1)
+        result = result.loc[:,~result.columns.duplicated()]
+        return localApriori(result, minSupport, minConfidence, minLift, minLength)
+    except:
+        print('Error - aprioriV2')
 
 def localApriori(df, minSupport, minConfidence, minLift, minLength):
     dfList = []

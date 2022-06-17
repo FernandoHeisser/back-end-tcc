@@ -21,9 +21,5 @@ input = api.model('search', {
 @api.expect(input)
 class Apriori(Resource):
     def post(self, ):
-        try:
-            return aprioriV2(api.payload)
-        except:
-            print('Apriori Error')
-            return "ERROR", 500
+        return aprioriV2(api.payload)
 
