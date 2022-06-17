@@ -1,7 +1,7 @@
 from flask_restx import Resource
 
 from src.config.server.instance import server
-from sessions.sessions_repository import *
+from src.sessions.sessions_repository import *
 
 app, api = server.app, server.api
 

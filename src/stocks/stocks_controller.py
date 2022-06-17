@@ -1,8 +1,8 @@
 from flask_restx import Resource, fields
 
 from src.config.server.instance import server
-from stocks.stocks_webscraper import *
-from stocks.stocks_repository import *
+from src.stocks.stocks_webscraper import *
+from src.stocks.stocks_repository import *
 
 app, api = server.app, server.api
 

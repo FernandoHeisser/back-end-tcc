@@ -1,7 +1,7 @@
 from flask_restx import Resource, fields
 
 from src.config.server.instance import server
-from yfinance.yfinance_repository import *
+from src.yfinance.yfinance_repository import *
 
 app, api = server.app, server.api
 

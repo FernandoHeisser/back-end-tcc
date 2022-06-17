@@ -1,6 +1,7 @@
 from flask_restx import Resource, fields
+
 from src.config.server.instance import server
-from analysis.analysis_repository import *
+from src.analysis.analysis_repository import *
 
 app, api = server.app, server.api
 
