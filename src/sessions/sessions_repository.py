@@ -16,15 +16,15 @@ def getSession(id):
                     info = getStockBySymbol(stock['symbol'])
                     data = getCurrentStockDataFromYahoo(stock['symbol'])
                     
-                    if not('tags' in stock and stock['tags'] is not None):
+                    if 'tags' not in stock or stock['tags'] is None or stock['tags'] == '':
                         stock['tags'] = str(info['company'] + ', ' + stock['symbol'])
 
                     userStocks.append(
                         {
                             'symbol': stock['symbol'],
                             'company': info['company'],
-                            'data': data,
                             'tags': stock['tags'],
+                            'data': data,
                         }
                     )
             except:

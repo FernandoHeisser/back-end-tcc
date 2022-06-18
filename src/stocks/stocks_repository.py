@@ -3,7 +3,7 @@ from src.config.database.connection import stocksDb
 
 def getStockBySymbol(symbol):    
     try:
-        return list(stocksDb.find({"symbol": str(symbol).upper()}))
+        return stocksDb.find_one({"symbol": str(symbol).upper()})
 
     except:
         print('Error - getStockNewsBySymbol')
