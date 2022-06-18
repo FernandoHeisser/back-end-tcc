@@ -2,57 +2,57 @@ import yfinance as yf
 
 def getCurrentStockDataFromYahoo(symbol):
     try:
-        today_data = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1m')
-        today_data = today_data.reset_index() 
+        today_data = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1d')
+        today_data = today_data.reset_index()
 
-        today_initial_row = today_data.iloc[0]
-        today_final_row = today_data.iloc[-1]
+        now_data = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1m')
+        now_data = now_data.reset_index() 
+
+        today_data = today_data.iloc[0]
+        now_data = now_data.iloc[-1]
 
         return {
-            'open': str(today_initial_row['Open']),
-            'high': str(today_final_row['High']),
-            'low': str(today_final_row['Low']),
-            'close': str(today_final_row['Close']),
-            'adjClose': str(today_final_row['Adj Close']),
-            'volume': str(today_final_row['Volume']),
-            'datetime': str(today_final_row['Datetime'])
-        }
-        
+            'high': str(today_data['High']),
+            'low': str(today_data['Low']),
+            'current': str(now_data['Close']),
+            'datetime': str(now_data['Datetime'])
+        }    
     except:
         print('Error - getCurrentStockDataFromYahoo')
         return None
 
 def getFirstOfTheDayAndCurrentStockDataFromYahoo(symbol):
     try:
-        yesterday_data = yf.download(tickers=(str(symbol) + '.SA'), period='2d', interval='1m')
+        yesterday_data = yf.download(tickers=(str(symbol) + '.SA'), period='2d', interval='1d')
         yesterday_data = yesterday_data.reset_index() 
-
-        yesterday_initial_row = yesterday_data.iloc[0]
+        yesterday_data = yesterday_data.iloc[0]
 
         yesterday = {
-            'open': str(yesterday_initial_row['Open']),
-            'high': str(yesterday_initial_row['High']),
-            'low': str(yesterday_initial_row['Low']),
-            'close': str(yesterday_initial_row['Close']),
-            'adjClose': str(yesterday_initial_row['Adj Close']),
-            'volume': str(yesterday_initial_row['Volume']),
-            'datetime': str(yesterday_initial_row['Datetime'])
+            'open': str(yesterday_data['Open']),
+            'high': str(yesterday_data['High']),
+            'low': str(yesterday_data['Low']),
+            'close': str(yesterday_data['Close']),
+            'adjClose': str(yesterday_data['Adj Close']),
+            'volume': str(yesterday_data['Volume']),
+            'datetime': str(yesterday_data['Date'])
         }
 
-        today_data = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1m')
+        today_data = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1d')
         today_data = today_data.reset_index() 
+        today_data = today_data.iloc[0]
 
-        today_initial_row = today_data.iloc[0]
-        today_final_row = today_data.iloc[-1]
+        today_last_data = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1m')
+        today_last_data = today_last_data.reset_index() 
+        today_last_data = today_last_data.iloc[-1]
 
         today = {
-            'open': str(today_initial_row['Open']),
-            'high': str(today_final_row['High']),
-            'low': str(today_final_row['Low']),
-            'close': str(today_final_row['Close']),
-            'adjClose': str(today_final_row['Adj Close']),
-            'volume': str(today_final_row['Volume']),
-            'datetime': str(today_final_row['Datetime'])
+            'open': str(today_data['Open']),
+            'high': str(today_data['High']),
+            'low': str(today_data['Low']),
+            'close': str(today_last_data['Close']),
+            'adjClose': str(today_last_data['Adj Close']),
+            'volume': str(today_data['Volume']),
+            'datetime': str(today_last_data['Datetime'])
         }
         
         return {
