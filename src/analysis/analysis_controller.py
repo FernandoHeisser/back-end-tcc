@@ -14,7 +14,8 @@ input = api.model('search', {
     'minLift': fields.Float,
     'minLength': fields.Integer,
     'firstCondition': fields.String,
-    'secondCondition': fields.String
+    'secondCondition': fields.String,
+    'interval': fields.String
 })
 
 @api.route('/apriori')

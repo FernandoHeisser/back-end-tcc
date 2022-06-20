@@ -114,6 +114,11 @@ def validateRequest(input):
     else:
         minLength = None
 
+    if 'interval' in input and input['interval'] is not None and input['interval'] != "" and input['interval'] != "null":
+        interval = input["interval"]
+    else:
+        interval = None
+
     return {
         'stocks': stocks,
         'startDate': startDate,
@@ -123,7 +128,8 @@ def validateRequest(input):
         'minSupport': minSupport,
         'minConfidence': minConfidence,
         'minLift': minLift,
-        'minLength': minLength
+        'minLength': minLength,
+        'interval': interval
     }
 
 def createDataFramePreviousRow(symbol, data, columnName1, stockCondition, columnName2):
@@ -166,11 +172,15 @@ def createDataFrameCurrentRow(symbol, data, columnName1, stockCondition, columnN
                 df = df.append({symbol:0}, ignore_index=True)    
     return df
 
-def createDataFrame(stock, startDate, endDate, firstCondition, secondCondition):
+def createDataFrame(stock, startDate, endDate, firstCondition, secondCondition, interval):
     symbol = stock['symbol']
     stockCondition = stock['condition']
 
-    data = yf.download(tickers=(str(symbol) + '.SA'), start = startDate, end = endDate)
+    if interval is not None:
+        data = yf.download(tickers=(str(symbol) + '.SA'), startDate = startDate, endDate = endDate, interval = interval)
+    else:
+        data = yf.download(tickers=(str(symbol) + '.SA'), start = startDate, end = endDate)
+
     data = data.reset_index()    
     data = dropColumns(data)
 
@@ -197,12 +207,13 @@ def aprioriV2(input):
         minConfidence = request['minConfidence']
         minLift = request['minLift']
         minLength = request['minLength']
+        interval = request['interval']
 
         dfs = []
 
         for stock in stocks:
             try:
-                dfs.append(createDataFrame(stock, startDate, endDate, firstCondition, secondCondition))
+                dfs.append(createDataFrame(stock, startDate, endDate, firstCondition, secondCondition, interval))
             except:
                 print("Stock not found")
 
