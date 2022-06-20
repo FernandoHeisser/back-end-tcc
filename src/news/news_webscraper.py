@@ -126,9 +126,13 @@ def extractedNews(tags):
                             'title': sub_article_time_title
                         }
                     })
+
+                first_sub_article = sub_articles[0]
+                del sub_articles[0]
                 
                 main_articles.append({
                     'article': m_article,
+                    'firstSubArticle': first_sub_article,
                     'subArticles': sub_articles
                 })
             except:
@@ -234,12 +238,8 @@ def extractedNews(tags):
         
         ordered_articles = sorted(articles, key = lambda article: (parser.parse(article["time"]["date"])), reverse=True)
 
-        first_article = ordered_articles[0]
-        del ordered_articles[0]
-
         return {
             'mainArticles': main_articles,
-            'firstArticle': first_article,
             'articles': ordered_articles
         }
     except:
