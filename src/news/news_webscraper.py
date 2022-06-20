@@ -22,7 +22,7 @@ def extractedNews(tags):
         for main_div in main_div_list:
             try:
                 try:
-                    main_article_image = main_div.div.div.a.figure.img['src']
+                    main_article_image = main_div.div.div.a.figure.img['srcset']
                 except:
                     print('Error getting main_article_image')
                     main_article_image = None
@@ -143,7 +143,7 @@ def extractedNews(tags):
         for article_div in article_div_list:
             if ' '.join(article_div['class']) == 'NiLAwe y6IFtc R7GTQ keNKEd j7vNaf nID9nc':
                 try:
-                    article_image = article_div.a.figure.img['src']
+                    article_image = article_div.a.figure.img['srcset']
                 except:
                     print('Error - article_image')
                     article_image = None
