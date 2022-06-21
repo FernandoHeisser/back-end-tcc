@@ -177,9 +177,9 @@ def createDataFrame(stock, startDate, endDate, firstCondition, secondCondition, 
     stockCondition = stock['condition']
 
     if interval is not None:
-        data = yf.download(tickers=(str(symbol) + '.SA'), startDate = startDate, endDate = endDate, interval = interval)
+        data = yf.download(str(symbol) + '.SA', start = startDate, end = endDate, interval = interval)
     else:
-        data = yf.download(tickers=(str(symbol) + '.SA'), start = startDate, end = endDate)
+        data = yf.download(str(symbol) + '.SA', start = startDate, end = endDate)
 
     data = data.reset_index()    
     data = dropColumns(data)
