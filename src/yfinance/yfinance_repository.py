@@ -41,17 +41,21 @@ def getFirstOfTheDayAndCurrentStockDataFromYahoo(symbol):
         today_data = today_data.reset_index()
         today_data = today_data.iloc[0]
 
+        day = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1d')
+        day = day.reset_index()
+        day = day.iloc[0]
+
         today_last_data = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1m')
         today_last_data = today_last_data.reset_index() 
         today_last_data = today_last_data.iloc[-1]
 
         today = {
-            'open': str(today_data['Open']),
-            'high': str(today_last_data['High']),
-            'low': str(today_data['Low']),
+            'open': str(day['Open']),
+            'high': str(day['High']),
+            'low': str(day['Low']),
             'close': str(today_last_data['Close']),
             'adjClose': str(today_last_data['Adj Close']),
-            'volume': str(today_data['Volume']),
+            'volume': str(day['Volume']),
             'datetime': str(today_last_data['Datetime'])
         }
         
