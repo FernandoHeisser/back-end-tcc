@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 def extractedNews(tags):
     try:
         base_url = 'https://news.google.com'
-        html = requests.get(f'{base_url}/search?for={tags}&hl=pt-BR&gl=BR').content
+        html = requests.get(f'{base_url}/search?for={tags}&hl=pt-BR&gl=BR', headers={'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'}).content
         soup = BeautifulSoup(html, 'html.parser')
         div_list = soup.find("div", {"class": "lBwEZb BL5WZb xP6mwf"}).contents
         
