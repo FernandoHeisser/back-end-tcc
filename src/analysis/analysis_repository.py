@@ -95,22 +95,22 @@ def validateRequest(input):
         endDate = None
 
     if 'minSupport' in input and input['minSupport'] is not None and input['minSupport'] != "" and input['minSupport'] != "null":
-        minSupport = int(input["minSupport"])
+        minSupport = float(input["minSupport"])
     else:
         minSupport = None
 
     if 'minConfidence' in input and input['minConfidence'] is not None and input['minConfidence'] != "" and input['minConfidence'] != "null":
-        minConfidence = int(input["minConfidence"])
+        minConfidence = float(input["minConfidence"])
     else:
         minConfidence = None
 
     if 'minLift' in input and input['minLift'] is not None and input['minLift'] != "" and input['minLift'] != "null":
-        minLift = int(input["minLift"])
+        minLift = float(input["minLift"])
     else:
         minLift = None
 
     if 'minLength' in input and input['minLength'] is not None and input['minLength'] != "" and input['minLength'] != "null":
-        minLength = int(input["minLength"])
+        minLength = float(input["minLength"])
     else:
         minLength = None
 
@@ -223,7 +223,6 @@ def aprioriV2(input):
         return localApriori(result, minSupport, minConfidence, minLift, minLength)
     except:
         print('Error - aprioriV2')
-    
         return [], 500
 
 def localApriori(df, minSupport, minConfidence, minLift, minLength):
@@ -242,13 +241,13 @@ def localApriori(df, minSupport, minConfidence, minLift, minLength):
     if len(dfList) == 0:
         return [], 500
 
-    if minSupport is None or minSupport >= 0:
+    if minSupport is None or minSupport <= 0:
         minSupport = 0.1
-    if minConfidence is None:
+    if minConfidence is None or minConfidence < 0:
         minConfidence = 0
-    if minLift is None:
+    if minLift is None or minLift < 0:
         minLift = 0
-    if minLength is None:
+    if minLength is None or minLength < 0:
         minLength = 0
 
     association_rules = apriori(dfList, min_support=minSupport, min_confidence=minConfidence, min_lift=minLift, min_length=minLength)
