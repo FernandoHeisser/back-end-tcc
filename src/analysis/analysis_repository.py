@@ -95,22 +95,22 @@ def validateRequest(input):
         endDate = None
 
     if 'minSupport' in input and input['minSupport'] is not None and input['minSupport'] != "" and input['minSupport'] != "null":
-        minSupport = input["minSupport"]
+        minSupport = int(input["minSupport"])
     else:
         minSupport = None
 
     if 'minConfidence' in input and input['minConfidence'] is not None and input['minConfidence'] != "" and input['minConfidence'] != "null":
-        minConfidence = input["minConfidence"]
+        minConfidence = int(input["minConfidence"])
     else:
         minConfidence = None
 
     if 'minLift' in input and input['minLift'] is not None and input['minLift'] != "" and input['minLift'] != "null":
-        minLift = input["minLift"]
+        minLift = int(input["minLift"])
     else:
         minLift = None
 
     if 'minLength' in input and input['minLength'] is not None and input['minLength'] != "" and input['minLength'] != "null":
-        minLength = input["minLength"]
+        minLength = int(input["minLength"])
     else:
         minLength = None
 
@@ -215,6 +215,7 @@ def aprioriV2(input):
             try:
                 dfs.append(createDataFrame(stock, startDate, endDate, firstCondition, secondCondition, interval))
             except:
+                dfs.append(pd.Series([]))
                 print("Stock not found")
 
         result = pd.concat(dfs, axis=1)
@@ -222,6 +223,8 @@ def aprioriV2(input):
         return localApriori(result, minSupport, minConfidence, minLift, minLength)
     except:
         print('Error - aprioriV2')
+    
+        return [], 500
 
 def localApriori(df, minSupport, minConfidence, minLift, minLength):
     dfList = []
@@ -235,6 +238,9 @@ def localApriori(df, minSupport, minConfidence, minLift, minLength):
             i = i+1
 
         dfList.append(rowList)
+
+    if len(dfList) == 0:
+        return [], 500
 
     if minSupport is None or minSupport >= 0:
         minSupport = 0.1
