@@ -74,9 +74,22 @@ def getCurrentStockDataFromYahooList(stockList):
     stockDatas = []
 
     for symbol in symbols:
+
+        counter = 0
+
+        while True:
+            content = getCurrentStockDataFromYahoo(symbol)
+
+            counter = counter + 1
+
+            if content is not None:
+                break
+            if counter >= 10: 
+                break
+
         stockDatas.append({
             'symbol': symbol,
-            'content': getCurrentStockDataFromYahoo(symbol)
+            'content': content
         })
 
     return stockDatas
@@ -86,10 +99,24 @@ def getFirstOfTheDayAndCurrentStockDataFromYahooList(stockList):
 
     stockDatas = []
 
+
     for symbol in symbols:
+
+        counter = 0
+
+        while True:
+            content = getFirstOfTheDayAndCurrentStockDataFromYahoo(symbol)
+
+            counter = counter + 1
+
+            if content is not None:
+                break
+            if counter >= 10: 
+                break
+
         stockDatas.append({
             'symbol': symbol,
-            'content': getFirstOfTheDayAndCurrentStockDataFromYahoo(symbol)
+            'content': content
         })
 
     return stockDatas
