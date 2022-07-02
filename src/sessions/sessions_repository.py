@@ -7,7 +7,7 @@ def getSession(id):
     try:
         user = getUser(id)
         if user is None:
-            return None
+            return None, 404
 
         userStocks = []
         for stock in user['stocks']:
@@ -17,7 +17,10 @@ def getSession(id):
                 info = getStockBySymbol(symbol)
                 data = getCurrentStockDataFromYahoo(symbol)
                 
-                tags = str(info['company'] + '+' + info['symbol']).replace(' ', '+')
+                if 'tags' not in stock or stock['tags'] is None:
+                    tags = str(info['company'] + '+' + info['symbol']).replace(' ', '+')
+                else:
+                    tags = stock['tags']
 
                 news = getNews(tags)
 
