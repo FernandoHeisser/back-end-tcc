@@ -55,3 +55,10 @@ def deleteUser(id):
         print('Error - deleteUser')
         return None
 
+def deleteUsers():    
+    try:    
+        return usersDb.delete_many({}).deleted_count
+    except:
+        print('Error - deleteUsers')
+        return None
+

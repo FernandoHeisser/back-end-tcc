@@ -220,7 +220,7 @@ def extractedNews(tags):
                     article_time_date = str(article_div.div.article.div.div.time['datetime'])
                 except:
                     print('Error - article_time_date')
-                    article_time_date = None
+                    article_time_date = '2000-01-01T00:00:00Z'
                 
                 articles.append({
                     'image': None,

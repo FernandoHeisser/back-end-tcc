@@ -11,28 +11,27 @@ def getSession(id):
 
         userStocks = []
         for stock in user['stocks']:
-            try: 
-                if 'symbol' in stock and stock['symbol'] is not None:
-                    
-                    info = getStockBySymbol(stock['symbol'])
-                    data = getCurrentStockDataFromYahoo(stock['symbol'])
-                    
-                    if 'tags' not in stock or stock['tags'] is None or stock['tags'] == '':
-                        stock['tags'] = str(info['company'] + '+' + stock['symbol']).replace(' ', '+')
+            try:
+                symbol = stock['symbol']
 
-                    news = getNews(stock['tags'])
+                info = getStockBySymbol(symbol)
+                data = getCurrentStockDataFromYahoo(symbol)
+                
+                tags = str(info['company'] + '+' + info['symbol']).replace(' ', '+')
 
-                    userStocks.append(
-                        {
-                            'symbol': stock['symbol'],
-                            'company': info['company'],
-                            'tags': stock['tags'],
-                            'data': data,
-                            'news': news
-                        }
-                    )
+                news = getNews(tags)
+
+                userStocks.append(
+                    {
+                        'symbol': info['symbol'],
+                        'company': info['company'],
+                        'tags': tags,
+                        'data': data,
+                        'news': news
+                    }
+                )
             except:
-                print('Could not get stock info - ' + stock['symbol'])
+                print('Could not get stock session - ' + symbol)
                 continue
 
         reponse = {

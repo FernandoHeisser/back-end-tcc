@@ -22,6 +22,9 @@ class Users(Resource):
     def put(self, ):
         return updateUser(api.payload)
 
+    def delete(self, ):
+        return deleteUsers()
+
 @api.route('/users/<string:id>')
 class UsersById(Resource):
     def get(self, id):    
