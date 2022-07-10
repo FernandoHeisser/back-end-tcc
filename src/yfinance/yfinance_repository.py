@@ -1,5 +1,4 @@
 import yfinance as yf
-yf.pdr_override()
 
 def getCurrentStockDataFromYahoo(symbol):
     try:
