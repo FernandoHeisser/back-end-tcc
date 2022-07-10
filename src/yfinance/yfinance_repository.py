@@ -1,29 +1,47 @@
 import yfinance as yf
+yf.pdr_override()
 
 def getCurrentStockDataFromYahoo(symbol):
     try:
-        today_data = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1d')
+        try:
+            today_data = yf.download((str(symbol) + '.SA'), period='1d', interval='1d')
+        except:
+            today_data = yf.download(str(symbol), period='1d', interval='1d')
+
         today_data = today_data.reset_index()
 
-        now_data = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1m')
+        try:
+            now_data = yf.download((str(symbol) + '.SA'), period='1d', interval='1m')
+        except:
+            now_data = yf.download(str(symbol), period='1d', interval='1m')
+        
         now_data = now_data.reset_index() 
 
         today_data = today_data.iloc[0]
         now_data = now_data.iloc[-1]
 
+        try:
+            _datetime = str(now_data['Datetime'])
+        except:
+            _datetime = str(now_data['Date'])
+
         return {
             'high': str(today_data['High']),
             'low': str(today_data['Low']),
             'current': str(now_data['Close']),
-            'datetime': str(now_data['Datetime'])
+            'datetime': _datetime
         }    
     except:
-        print('Error - getCurrentStockDataFromYahoo')
+        print('Error - getCurrentStockDataFromYahoo - ' + symbol)
         return None
 
 def getFirstOfTheDayAndCurrentStockDataFromYahoo(symbol):
     try:
-        yesterday_data = yf.download(tickers=(str(symbol) + '.SA'), period='2d', interval='1d')
+        try:
+            yesterday_data = yf.download((str(symbol) + '.SA'), period='2d', interval='1d')
+        except:
+            yesterday_data = yf.download(str(symbol), period='2d', interval='1d')
+
         yesterday_data = yesterday_data.reset_index() 
         yesterday_data = yesterday_data.iloc[0]
 
@@ -37,15 +55,27 @@ def getFirstOfTheDayAndCurrentStockDataFromYahoo(symbol):
             'datetime': str(yesterday_data['Date'])
         }
 
-        today_data = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1h')
+        try:
+            today_data = yf.download((str(symbol) + '.SA'), period='1d', interval='1h')
+        except:
+            today_data = yf.download(str(symbol), period='1d', interval='1h')
+
         today_data = today_data.reset_index()
         today_data = today_data.iloc[0]
 
-        day = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1d')
+        try:
+            day = yf.download((str(symbol) + '.SA'), period='1d', interval='1d')
+        except:
+            day = yf.download(str(symbol), period='1d', interval='1d')
+
         day = day.reset_index()
         day = day.iloc[0]
 
-        today_last_data = yf.download(tickers=(str(symbol) + '.SA'), period='1d', interval='1m')
+        try:
+            today_last_data = yf.download((str(symbol) + '.SA'), period='1d', interval='1m')
+        except:
+            today_last_data = yf.download(str(symbol), period='1d', interval='1m')
+
         today_last_data = today_last_data.reset_index() 
         today_last_data = today_last_data.iloc[-1]
 

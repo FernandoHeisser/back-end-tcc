@@ -2,6 +2,8 @@ import yfinance as yf
 import pandas as pd
 from apyori import apriori
 
+yf.pdr_override()
+
 def getCondition(firstCondition, secondCondition):
     if firstCondition == "Abertura (atual)":
         column1 = 'Open'
