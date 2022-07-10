@@ -53,13 +53,11 @@ def extractedNews(tags):
                 try:
                     main_article_time_date = main_div.div.div.article.div.div.time['datetime']
                 except:
-                    print('Error getting main_article_time_date')
                     main_article_time_date = '2000-01-01T00:00:00Z'
                     
                 try:
                     main_article_time_title = main_div.div.div.article.div.div.time.string
                 except:
-                    print('Error getting main_article_time_title')
                     main_article_time_title = None
 
                 m_article = {
@@ -106,12 +104,10 @@ def extractedNews(tags):
                     try:
                         sub_article_time_date = str(article_div.div.time['datetime'])
                     except:
-                        print('Error getting sub_article_time_date')
                         sub_article_time_date = '2000-01-01T00:00:00Z'
                     try:
                         sub_article_time_title = str(article_div.div.time.string)
                     except:
-                        print('Error getting sub_article_time_title')
                         sub_article_time_title = None
 
                     sub_articles.append({
@@ -169,12 +165,10 @@ def extractedNews(tags):
                 try:
                     article_time_title = article_div.div.article.div.div.time.string
                 except:
-                    print('Error - article_time_title')
                     article_time_title = None
                 try:
                     article_time_date = str(article_div.div.article.div.div.time['datetime'])
                 except:
-                    print('Error - article_time_date')
                     article_time_date = '2000-01-01T00:00:00Z'
 
                 articles.append({
@@ -214,12 +208,10 @@ def extractedNews(tags):
                 try:
                     article_time_title = article_div.div.article.div.div.time.string
                 except:
-                    print('Error - article_time_title')
                     article_time_title = None
                 try:
                     article_time_date = str(article_div.div.article.div.div.time['datetime'])
                 except:
-                    print('Error - article_time_date')
                     article_time_date = '2000-01-01T00:00:00Z'
                 
                 articles.append({
