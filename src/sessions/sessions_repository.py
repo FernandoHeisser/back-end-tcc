@@ -1,6 +1,6 @@
 from src.users.users_repository import getUser
 from src.stocks.stocks_repository import getStockBySymbol
-from src.yfinance.yfinance_repository import getCurrentStockDataFromYahoo
+from src.yfinance.yfinance_repository import getLastDailyYahooData
 from src.news.news_webscraper import getNews
 
 def getSession(id):
@@ -15,7 +15,7 @@ def getSession(id):
                 symbol = stock['symbol']
 
                 info = getStockBySymbol(symbol)
-                data = getCurrentStockDataFromYahoo(symbol)
+                data = getLastDailyYahooData(symbol)
                 
                 if 'tags' not in stock or stock['tags'] is None:
                     tags = str(info['company'] + '+' + info['symbol']).replace(' ', '+')
