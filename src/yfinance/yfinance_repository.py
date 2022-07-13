@@ -31,55 +31,84 @@ def getLastDailyYahooData(symbol):
             'datetime': _datetime
         }    
     except:
-        print('Error - getCurrentStockDataFromYahoo - ' + symbol)
+        print('Error - getLastDailyYahooData - ' + symbol)
         return None
 
-def getLastYahooData(symbol, interval):
+def getLastYahooData(symbol):
     try:
         try:
-            data = yf.download((str(symbol) + '.SA'), period='1d', interval=interval)
+            yesterday_data = yf.download((str(symbol) + '.SA'), period='2d', interval='1d')
         except:
-            data = yf.download(str(symbol), period='1d', interval=interval)
+            yesterday_data = yf.download(str(symbol), period='2d', interval='1d')
 
-        data = data.reset_index() 
-        data = data.iloc[-1]
+        yesterday_data = yesterday_data.reset_index() 
+        yesterday_data = yesterday_data.iloc[0]
+
+        yesterday = {
+            'open': str(yesterday_data['Open']),
+            'high': str(yesterday_data['High']),
+            'low': str(yesterday_data['Low']),
+            'close': str(yesterday_data['Close']),
+            'adjClose': str(yesterday_data['Adj Close']),
+            'volume': str(yesterday_data['Volume']),
+            'datetime': str(yesterday_data['Date'])
+        }
 
         try:
-            date = str(data['Datetime'])
+            today_data = yf.download((str(symbol) + '.SA'), period='1d', interval='1h')
         except:
-            date = str(data['Date'])
+            today_data = yf.download(str(symbol), period='1d', interval='1h')
 
-        response = {
-            'open': str(data['Open']),
-            'high': str(data['High']),
-            'low': str(data['Low']),
-            'close': str(data['Close']),
-            'adjClose': str(data['Adj Close']),
-            'volume': str(data['Volume']),
-            'datetime': date
+        today_data = today_data.reset_index()
+        today_data = today_data.iloc[0]
+
+        try:
+            day = yf.download((str(symbol) + '.SA'), period='1d', interval='1d')
+        except:
+            day = yf.download(str(symbol), period='1d', interval='1d')
+
+        day = day.reset_index()
+        day = day.iloc[0]
+
+        try:
+            today_last_data = yf.download((str(symbol) + '.SA'), period='1d', interval='1m')
+        except:
+            today_last_data = yf.download(str(symbol), period='1d', interval='1m')
+
+        today_last_data = today_last_data.reset_index() 
+        today_last_data = today_last_data.iloc[-1]
+
+        today = {
+            'open': str(day['Open']),
+            'high': str(day['High']),
+            'low': str(day['Low']),
+            'close': str(today_last_data['Close']),
+            'adjClose': str(today_last_data['Adj Close']),
+            'volume': str(day['Volume']),
+            'datetime': str(today_last_data['Datetime'])
         }
         
-        return response
+        return {
+            'yesterday': yesterday,
+            'today': today
+        }
 
     except:
-        print('Error - getLastYahooData')
+        print('Error - getLastYahooData - ' + symbol)
         return None
 
-def getLastYahooDataList(request):
-    if 'stockList' in request:
-        symbols = request['stockList']
-    if 'interval' in request and request['interval'] is not None:
-        interval = request['interval']
-    else:
-        interval = '1d'
+def getLastYahooDataList(stockList):
+    symbols = stockList['stockList']
 
     stockDatas = []
+
+
     for symbol in symbols:
 
         counter = 0
 
         while True:
-            content = getLastYahooData(symbol, interval)
+            content = getLastYahooData(symbol)
 
             counter = counter + 1
 

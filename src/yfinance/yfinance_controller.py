@@ -9,15 +9,15 @@ stockList = api.model('stockList', {
     "stockList": fields.List,
 })
 
-@api.route('/yahoo/<string:symbol>')
+@api.route('/yahoo/now/<string:symbol>')
 class GetLastDailyYahooData(Resource):
     def get(self, symbol):
         return getLastDailyYahooData(symbol)
 
-@api.route('/yahoo/<string:symbol>/<string:interval>')
+@api.route('/yahoo/<string:symbol>')
 class GetLastYahooData(Resource):
-    def get(self, symbol, interval):
-        return getLastYahooData(symbol, interval)
+    def get(self, symbol):
+        return getLastYahooData(symbol)
 
 @api.route('/yahoo')
 class GetLastYahooDataList(Resource):
