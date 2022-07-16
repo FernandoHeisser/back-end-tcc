@@ -3,51 +3,51 @@ import pandas as pd
 from apyori import apriori
 
 def getCondition(firstCondition, secondCondition):
-    if firstCondition == "Abertura (atual)":
+    if firstCondition == "Abertura":
         column1 = 'Open'
         previous = False
 
-    if firstCondition == "Fechamento (atual)":
+    if firstCondition == "Fechamento":
         column1 = 'Close'
         previous = False
 
-    if firstCondition == "Alta (atual)":
+    if firstCondition == "Máxima":
         column1 = 'High'
         previous = False
 
-    if firstCondition == "Baixa (atual)":
+    if firstCondition == "Mínima":
         column1 = 'Low'
         previous = False
 
-    if secondCondition == "Abertura (atual)":
+    if secondCondition == "Abertura":
         column2 = 'Open'
         previous = False
 
-    if secondCondition == "Fechamento (atual)":
+    if secondCondition == "Fechamento":
         column2 = 'Close'
         previous = False
 
-    if secondCondition == "Alta (atual)":
+    if secondCondition == "Máxima":
         column2 = 'High'
         previous = False
 
-    if secondCondition == "Baixa (atual)":
+    if secondCondition == "Mínima":
         column2 = 'Low'
         previous = False
 
-    if firstCondition == "Abertura (dia anterior)":
+    if firstCondition == "Abertura (anterior)":
         column1 = 'Open'
         previous = True
 
-    if firstCondition == "Fechamento (dia anterior)":
+    if firstCondition == "Fechamento (anterior)":
         column1 = 'Close'
         previous = True
 
-    if firstCondition == "Alta (dia anterior)":
+    if firstCondition == "Máxima (anterior)":
         column1 = 'High'
         previous = True
 
-    if firstCondition == "Baixa (dia anterior)":
+    if firstCondition == "Mínima (anterior)":
         column1 = 'Low'
         previous = True
 
