@@ -9,11 +9,6 @@ stockList = api.model('stockList', {
     "stockList": fields.List,
 })
 
-@api.route('/yahoo/now/<string:symbol>')
-class GetLastDailyYahooData(Resource):
-    def get(self, symbol):
-        return getLastDailyYahooData(symbol)
-
 @api.route('/yahoo/<string:symbol>')
 class GetLastYahooData(Resource):
     def get(self, symbol):
