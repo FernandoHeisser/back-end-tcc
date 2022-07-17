@@ -1,6 +1,14 @@
+from datetime import datetime
 import yfinance as yf
 import pandas as pd
 from apyori import apriori
+
+def dateWithOneMoreDay(date):
+    d = datetime.strptime(date, '%Y-%m-%d')
+    day = int(d.strftime("%d")) + 1
+    month = d.strftime("%m")
+    year = d.strftime("%Y")
+    return str(year) + '-' + str(month) + '-' + str(day)
 
 def getCondition(firstCondition, secondCondition):
     if firstCondition == "Abertura":
@@ -177,9 +185,15 @@ def createDataFrame(stock, startDate, endDate, firstCondition, secondCondition, 
     stockCondition = stock['condition']
 
     if interval is not None:
-        data = yf.download(str(symbol) + '.SA', start = startDate, end = endDate, interval = interval)
+        try:
+            data = yf.download(str(symbol) + '.SA', start = startDate, end = dateWithOneMoreDay(endDate), interval = interval)
+        except:
+            data = yf.download(str(symbol) + '.SA', start = startDate, end = endDate, interval = interval)
     else:
-        data = yf.download(str(symbol) + '.SA', start = startDate, end = endDate)
+        try:
+            data = yf.download(str(symbol) + '.SA', start = startDate, end = dateWithOneMoreDay(endDate))
+        except:
+            data = yf.download(str(symbol) + '.SA', start = startDate, end = endDate)
 
     data = data.reset_index()    
     data = dropColumns(data)
