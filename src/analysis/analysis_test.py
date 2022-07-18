@@ -1,7 +1,6 @@
 from datetime import datetime
 import yfinance as yf
 import pandas as pd
-from apyori import apriori
 
 def dateWithOneMoreDay(date):
     d = datetime.strptime(date, '%Y-%m-%d')
@@ -72,46 +71,6 @@ def dropColumns(df):
     if 'Adj Close' in df.columns: 
         del df['Adj Close']
     return df
-
-def validateRequest(input):
-    if 'stocks' not in input or input['stocks'] is None or len(list(input['stocks'])) == 0:
-        raise Exception("BAD_REQUEST", 400)
-    else:
-        stocks = input['stocks']
-    
-    if 'startDate' not in input or input['startDate'] is None or input['startDate'] == "" or input['startDate'] == "null":
-        raise Exception("BAD_REQUEST", 400)
-    else:
-        startDate = input['startDate']
-    
-    if 'firstCondition' not in input or input['firstCondition'] is None or input['firstCondition'] == "" or input['firstCondition'] == "null":
-        raise Exception("BAD_REQUEST", 400)
-    else:
-        firstCondition = input['firstCondition']
-    
-    if 'secondCondition' not in input or input['secondCondition'] is None or input['secondCondition'] == "" or input['secondCondition'] == "null":
-        raise Exception("BAD_REQUEST", 400)
-    else:
-        secondCondition = input['secondCondition']
-
-    if 'endDate' in input and input['endDate'] is not None and input['endDate'] != "" and input['endDate'] != "null":
-        endDate = input["endDate"]
-    else:
-        endDate = None
-
-    if 'interval' in input and input['interval'] is not None and input['interval'] != "" and input['interval'] != "null":
-        interval = input["interval"]
-    else:
-        interval = None
-
-    return {
-        'stocks': stocks,
-        'startDate': startDate,
-        'firstCondition': firstCondition,
-        'secondCondition': secondCondition,
-        'endDate': endDate,
-        'interval': interval
-    }
 
 def createDataFramePreviousRow(symbol, data, columnName1, stockCondition, columnName2):
     df = pd.DataFrame(columns=[symbol])
@@ -191,25 +150,20 @@ def createDataFrame(stock, startDate, endDate, firstCondition, secondCondition, 
         return createDataFrameCurrentRow(symbol, data, columnName1, stockCondition, columnName2), dates
 
 def aprioriTest(input):
-    request = validateRequest(input)   
-
-    stocks = request['stocks']
-    startDate = request['startDate']
-    firstCondition = request['firstCondition']
-    secondCondition = request['secondCondition']
-    endDate = request['endDate']
-    interval = request['interval']
+    stocks = input['stocks']
+    startDate = input['startDate']
+    firstCondition = input['firstCondition']
+    secondCondition = input['secondCondition']
+    endDate = input['endDate']
+    interval = input['interval']
 
     dfs = []
     dates = []
 
     for stock in stocks:
-        try:
-            response = createDataFrame(stock, startDate, endDate, firstCondition, secondCondition, interval)
-            dfs.append(response[0])
-            dates.append(response[1])
-        except:
-            print("Stock not found")
+        response = createDataFrame(stock, startDate, endDate, firstCondition, secondCondition, interval)
+        dfs.append(response[0])
+        dates.append(response[1])
 
     result = pd.concat(dfs, axis=1)
     result = result.loc[:,~result.columns.duplicated()]
@@ -217,10 +171,6 @@ def aprioriTest(input):
     dates = pd.concat(dates, axis=1)
     dates = dates.loc[:,~dates.columns.duplicated()]
     
-    f = open("file.csv", "w")
-    f.write(str('Date' + ',' + ','.join(result.columns)) + '\n')
-    for index, row in result.iterrows():
-        f.write(str(dates.iloc[index].tolist()[0]) + ',' + str(','.join(map(str, row.values))) + '\n')
-    f.close()        
+    print(pd.concat([dates, result], axis=1))
     return 'OK', 200
 
